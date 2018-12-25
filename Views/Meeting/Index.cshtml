@@ -1,0 +1,54 @@
+﻿@model IEnumerable<WebApp1.Models.Meeting>
+
+@{
+    ViewData["Title"] = "Danh sách";
+}
+
+<h1>Danh sách cuộc họp</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary"><i class="fas fa-plus"></i> Thêm cuộc họp</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            @*<th>
+                @Html.DisplayNameFor(model => model.OwnerID)
+            </th>*@
+            <th>
+                @*@Html.DisplayNameFor(model => model.MeetingTitle)*@Tên cuộc họp
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MeetingDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Summary)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            @*<td>
+                @Html.DisplayFor(modelItem => item.OwnerID)
+            </td>*@
+            <td>
+                @Html.DisplayFor(modelItem => item.MeetingTitle)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MeetingDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Summary)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.MeetingID" class="btn btn-sm btn-primary"><i class="fas fa-edit"></i></a>
+                <a asp-action="Details" asp-route-id="@item.MeetingID" class="btn btn-sm btn-info"><i class="fas fa-info-circle"></i></a>
+                <a asp-action="Delete" asp-route-id="@item.MeetingID" class="btn btn-sm btn-danger"><i class="fas fa-trash-alt"></i></a>
+                <a asp-controller="FilesUpload" asp-action="Create" asp-route-MeetingID="@item.MeetingID" title="Thêm tài liệu" class="btn btn-sm btn-success"><i class="fas fa-plus"></i> Files</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

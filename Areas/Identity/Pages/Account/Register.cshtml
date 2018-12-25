@@ -1,0 +1,120 @@
+﻿@page
+@model RegisterModel
+@{
+    ViewData["Title"] = "Đăng ký";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-route-returnUrl="@Model.ReturnUrl" method="post">
+            <h4>Tạo mới tài khoản.</h4>
+            <hr />
+            <div asp-validation-summary="All" class="text-danger"></div>
+            @*<!-- #region Thông tin Đảng viên -->
+            <div class="form-group">
+                <label asp-for="Input.BirthName"></label>
+                <input asp-for="Input.BirthName" class="form-control">
+                <span asp-validation-for="Input.BirthName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Input.BirthDay"></label>
+                <input asp-for="Input.BirthDay" class="form-control">
+                <span asp-validation-for="Input.BirthDay" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Input.Gender"></label>
+                <input asp-for="Input.Gender" class="form-control">
+                <span asp-validation-for="Input.Gender" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Input.Ethnicity"></label>
+                <input asp-for="Input.Ethnicity" class="form-control">
+                <span asp-validation-for="Input.Ethnicity" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Input.Religion"></label>
+                <input asp-for="Input.Religion" class="form-control">
+                <span asp-validation-for="Input.Religion" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Input.Country"></label>
+                <input asp-for="Input.Country" class="form-control">
+                <span asp-validation-for="Input.Country" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Input.EduLevel"></label>
+                <input asp-for="Input.EduLevel" class="form-control">
+                <span asp-validation-for="Input.EduLevel" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Input.JobInfo"></label>
+                <input asp-for="Input.JobInfo" class="form-control">
+                <span asp-validation-for="Input.JobInfo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Input.PartyDateInfo"></label>
+                <input asp-for="Input.PartyDateInfo" class="form-control">
+                <span asp-validation-for="Input.PartyDateInfo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Input.PartyCardNum"></label>
+                <input asp-for="Input.PartyCardNum" class="form-control">
+                <span asp-validation-for="Input.PartyCardNum" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Input.MilitaryPoliceRetire"></label>
+                <input asp-for="Input.MilitaryPoliceRetire" class="form-control">
+                <span asp-validation-for="Input.MilitaryPoliceRetire" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Input.OutGoingInfo"></label>
+                <input asp-for="Input.OutGoingInfo" class="form-control">
+                <span asp-validation-for="Input.OutGoingInfo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Input.InComingInfo"></label>
+                <input asp-for="Input.InComingInfo" class="form-control">
+                <span asp-validation-for="Input.InComingInfo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Input.DiedInfo"></label>
+                <input asp-for="Input.DiedInfo" class="form-control">
+                <span asp-validation-for="Input.DiedInfo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Input.LeaveInfo"></label>
+                <input asp-for="Input.LeaveInfo" class="form-control">
+                <span asp-validation-for="Input.LeaveInfo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Input.Comment"></label>
+                <input asp-for="Input.Comment" class="form-control">
+                <span asp-validation-for="Input.Comment" class="text-danger"></span>
+            </div>
+            <!-- #endregion -->
+            *@
+            <div class="form-group">
+                <label asp-for="Input.Email"></label>
+                <input asp-for="Input.Email" class="form-control" />
+                <span asp-validation-for="Input.Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Input.Password"></label>
+                <input asp-for="Input.Password" class="form-control" />
+                <span asp-validation-for="Input.Password" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Input.ConfirmPassword"></label>
+                <input asp-for="Input.ConfirmPassword" class="form-control" />
+                <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+            </div>
+            <button type="submit" class="btn btn-primary">Register</button>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

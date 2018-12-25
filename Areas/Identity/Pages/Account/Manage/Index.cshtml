@@ -1,0 +1,113 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Hồ sơ cá nhân";
+    ViewData["ActivePage"] = ManageNavPages.Index;
+}
+
+<h4>@ViewData["Title"]</h4>
+<partial name="_StatusMessage" for="StatusMessage" />
+<div class="row">
+    <div class="col-md-6">
+        <form id="profile-form" method="post">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Username"></label>
+                <input asp-for="Username" class="form-control" disabled />
+            </div>
+            <div class="form-group">
+                <label asp-for="Input.Email"></label>
+                @if (Model.IsEmailConfirmed)
+                {
+                    <div class="input-group">
+                        <input asp-for="Input.Email" class="form-control" />
+                        <span class="input-group-addon" aria-hidden="true"><span class="glyphicon glyphicon-ok text-success"></span></span>
+                    </div>
+                }
+                else
+                {
+                    <input asp-for="Input.Email" class="form-control" />
+                    <button id="email-verification" type="submit" asp-page-handler="SendVerificationEmail" class="btn btn-link">Send verification email</button>
+                }
+                <span asp-validation-for="Input.Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Input.PhoneNumber"></label>
+                <input asp-for="Input.PhoneNumber" class="form-control" />
+                <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
+                <!-- #region Thông tin Đảng viên  -->
+                <div class="form-group">
+                    <label asp-for="Input.BirthName"></label>
+                    <input asp-for="Input.BirthName" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label asp-for="Input.BirthDay"></label>
+                    <input asp-for="Input.BirthDay" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label asp-for="Input.Gender"></label>
+                    <input asp-for="Input.Gender" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label asp-for="Input.Ethnicity"></label>
+                    <input asp-for="Input.Ethnicity" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label asp-for="Input.Religion"></label>
+                    <input asp-for="Input.Religion" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label asp-for="Input.Country"></label>
+                    <input asp-for="Input.Country" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label asp-for="Input.EduLevel"></label>
+                    <input asp-for="Input.EduLevel" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label asp-for="Input.JobInfo"></label>
+                    <input asp-for="Input.JobInfo" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label asp-for="Input.PartyDateInfo"></label>
+                    <input asp-for="Input.PartyDateInfo" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label asp-for="Input.PartyCardNum"></label>
+                    <input asp-for="Input.PartyCardNum" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label asp-for="Input.MilitaryPoliceRetire"></label>
+                    <input asp-for="Input.MilitaryPoliceRetire" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label asp-for="Input.OutGoingInfo"></label>
+                    <input asp-for="Input.OutGoingInfo" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label asp-for="Input.InComingInfo"></label>
+                    <input asp-for="Input.InComingInfo" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label asp-for="Input.DiedInfo"></label>
+                    <input asp-for="Input.DiedInfo" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label asp-for="Input.LeaveInfo"></label>
+                    <input asp-for="Input.LeaveInfo" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label asp-for="Input.Comment"></label>
+                    <input asp-for="Input.Comment" class="form-control">
+                </div>
+                <!-- #endregion -->
+
+            </div>
+            <button id="update-profile-button" type="submit" class="btn btn-primary">Save</button>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

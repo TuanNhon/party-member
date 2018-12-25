@@ -1,0 +1,14 @@
+﻿@{
+    ViewData["Title"] = "Trang chủ";
+}
+
+@{
+    if(TempData.ContainsKey("Alert")){
+        <div class="alert alert-danger" role="alert">@TempData["Alert"]</div>
+    }
+}
+
+
+<div class="text-center">
+    <h1 class="display-4">Chào mừng đến với<br>Hệ Thống Quản Lý Chi Bộ</h1>
+</div>

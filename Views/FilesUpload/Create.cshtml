@@ -1,0 +1,58 @@
+﻿@using WebApp1.Data
+@model WebApp1.Models.FilesUpload
+
+@{
+    ViewData["Title"] = "Thêm tài liệu";
+    var id = -1;
+    var title = "";
+    if(ViewBag.meeting != null)
+    {
+        id = ((Meeting)ViewBag.meeting).MeetingID;
+        title = ((Meeting)ViewBag.meeting).MeetingTitle;
+    }
+}
+
+<h1>Thêm</h1>
+
+<h4>Tài liệu</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input asp-for="MeetingID" type="hidden" class="form-control" value="@((id < 0) ? id.ToString() : "")" />
+            <div class="form-group ui-widget">
+                <label for="MeetingTitle" class="control-label">Cuộc họp</label>
+                <input id="MeetingTitle" type="text" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <input asp-for="Description" class="form-control" value="@(!String.IsNullOrEmpty(title) ? title : "")"/>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label>Tài liệu</label>
+                <input type="file" name="formFiles" multiple />
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+<script src="~/js/FilesUpload.js" asp-append-version="true"></script>
+
+@*<script>
+    $("#MeetingTitle").autocomplete({
+        source: '@Url.Action("CreateData","FilesUpload")'
+    });
+</script>*@
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -1,0 +1,72 @@
+﻿@model IEnumerable<WebApp1.Models.Funds>
+
+@{
+    ViewData["Title"] = "Danh sách";
+    var count = 1;
+}
+
+<h1>Danh sách Phí</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary"><i class="fas fa-plus"></i> Thêm bản ghi</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            @*<th>
+                @Html.DisplayNameFor(model => model.OwnerID)
+            </th>*@
+            <th scope="col">
+                #
+            </th>
+            <th scope="col">
+                @Html.DisplayNameFor(model => model.Currency)
+            </th>
+            <th scope="col">
+                @Html.DisplayNameFor(model => model.isCollect)
+            </th>
+            <th scope="col">
+                @Html.DisplayNameFor(model => model.TotalFund)
+            </th>
+            <th scope="col">
+                @Html.DisplayNameFor(model => model.UpatedDate)
+            </th>
+            <th scope="col">
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th scope="col"></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            @*<td>
+                @Html.DisplayFor(modelItem => item.OwnerID)
+            </td>*@
+            <td scope="row">
+                @(count++)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Currency)
+            </td>
+            <td>
+                @(item.isCollect ? "Phí Thu" : "Phí Chi")
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TotalFund)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UpatedDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.FundID" class="btn btn-sm btn-primary"><i class="fas fa-edit"></i></a>
+                <a asp-action="Details" asp-route-id="@item.FundID" class="btn btn-sm btn-info"><i class="fas fa-info-circle"></i></a>
+                <a asp-action="Delete" asp-route-id="@item.FundID" class="btn btn-sm btn-danger"><i class="fas fa-trash-alt"></i></a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

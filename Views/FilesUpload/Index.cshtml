@@ -1,0 +1,79 @@
+﻿@model IEnumerable<WebApp1.ViewModels.FileViewModel>
+
+@{
+    ViewData["Title"] = "Danh sách";
+    var count = 1;
+}
+
+<h1>Danh sách tài liệu</h1>
+<p>
+    <a asp-action="Create" class="btn btn-primary"><i class="fas fa-plus"></i> Thêm tài liệu</a>
+</p>
+<div class="table-responsive-md">
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">
+                    #
+                </th>
+                <th scope="col">
+                    @Html.DisplayNameFor(m => m.MeetingTitle)
+                </th>
+                <th scope="col">
+                    @Html.DisplayNameFor(m => m.BirthName)
+                </th>
+                <th scope="col">
+                    @Html.DisplayNameFor(m => m.FileUpload.FileName)
+                </th>
+                <th scope="col">
+                    @Html.DisplayNameFor(m => m.FileUpload.UploadDate)
+                </th>
+                <th scope="col">
+                    @Html.DisplayNameFor(m => m.FileUpload.Description)
+                </th>
+                @*<th scope="col">
+                    @Html.DisplayNameFor(m => m.FileUpload.FilePath)
+                </th>*@
+                <th scope="col">Thao tác</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <th scope="row">
+                        @(count++)
+                    </th>
+                    <td>
+                        @Html.DisplayFor(ModelItem => item.MeetingTitle)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(ModelItem => item.BirthName)
+                    </td>
+                    <td>
+                        <a class="docIframe" href="https://docs.google.com/gview?url=https://localhost:80@(item.FileUpload.FilePath)">
+                            @Html.DisplayFor(ModelItem => item.FileUpload.FileName)
+                        </a>
+                    </td>
+                    <td>
+                        @Html.DisplayFor(ModelItem => item.FileUpload.UploadDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(ModelItem => item.FileUpload.Description)
+                    </td>
+                    @*<td>
+                        @Html.DisplayFor(ModelItem => item.FileUpload.FilePath)
+                    </td>*@
+                    <td>
+                        <div class="form-group">
+                            <a asp-action="Edit" asp-route-id="@item.FileUpload.FileID" class="btn btn-sm btn-primary"><i class="fas fa-edit"></i></a>
+                            <a asp-action="Details" asp-route-id="@item.FileUpload.FileID" class="btn btn-sm btn-info"><i class="fas fa-info-circle"></i></a>
+                            <a asp-action="Delete" asp-route-id="@item.FileUpload.FileID" class="btn btn-sm btn-danger"><i class="fas fa-trash-alt"></i></a>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+

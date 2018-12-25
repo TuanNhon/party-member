@@ -1,0 +1,78 @@
+﻿@model WebApp1.ViewModels.MeetingViewModel
+
+@{
+    ViewData["Title"] = "Thông tin cuộc họp";
+    var count = 1;
+}
+
+<h1>Thông tin</h1>
+
+<div>
+    <h4>Cuộc họp</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(m => m.Meeting.MeetingTitle)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(m => m.Meeting.MeetingTitle)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(m => m.Meeting.MeetingDate)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(m => m.Meeting.MeetingDate)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(m => m.Meeting.Summary)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(m => m.Meeting.Summary)
+        </dd>
+    </dl>
+    <h4>Tài liệu trong cuộc họp</h4>
+    <div class="table-responsive-md">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">
+                        #
+                    </th>
+                    <th scope="col">
+                        @Html.DisplayNameFor(m => m.Files[0].FileName)
+                    </th>
+                    <th scope="col">
+                        @Html.DisplayNameFor(m => m.Files[0].UploadDate)
+                    </th>
+                    <th scope="col">
+                        @Html.DisplayNameFor(m => m.Files[0].Description)
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Files)
+                {
+                    <tr>
+                        <th scope="row">
+                            @(count++)
+                        </th>
+                        <td>
+                            @Html.DisplayFor(ModelItem => item.FileName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(ModelItem => item.UploadDate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(ModelItem => item.Description)
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Meeting.MeetingID">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>
