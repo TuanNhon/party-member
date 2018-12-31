@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Http;
 using System.IO;
 using Microsoft.AspNetCore.Hosting;
 using System;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace WebApp1.Controllers
 {
@@ -39,13 +40,17 @@ namespace WebApp1.Controllers
         public async Task<IActionResult> Index()
         {
             var listFiles = new List<FileViewModel>();
+            string topDomain = $"{this.Request.Scheme}://{this.Request.Host}{this.Request.PathBase}"; ;
+            string[] filePreview = { "https://docs.google.com/gview?url=", "&embedded=true" };
             try
             {
-                (await _context.FilesUpload.ToListAsync()).ForEach(async file => {
+                (await _context.FilesUpload.ToListAsync()).ForEach(async file =>
+                {
                     string ownerName = (await _userManager.FindByIdAsync(file.OwnerID))?.BirthName ?? string.Empty;
                     string meetingTitle = (from m in _context.Meeting
                                            where m.MeetingID == file.MeetingID
                                            select m).First().MeetingTitle;
+                    file.FilePath = $"{filePreview[0]}{topDomain + file.FilePath.Replace('\\', '/')}{filePreview[1]}";
                     listFiles.Add(new FileViewModel(file, ownerName, meetingTitle));
                 });
             }
@@ -77,7 +82,7 @@ namespace WebApp1.Controllers
         // GET: FilesUpload/Create?MeetingID
         public IActionResult Create(int? MeetingID)
         {
-            if(MeetingID != null)
+            if (MeetingID != null)
             {
                 Meeting meeting = (from m in _context.Meeting
                                    where m.MeetingID == MeetingID
@@ -95,8 +100,7 @@ namespace WebApp1.Controllers
         [RequestSizeLimit(115343360)]                               //Giới hạn file upload
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(
-            [Bind("FileID,MeetingID,OwnerID,FileName,UploadDate,Description,FilePath")] FilesUpload filesUpload,
-            List<IFormFile> formFiles)
+            [Bind("FileUpload,BirthName,MeetingTitle,Extension,FileNameWithoutExt,Files")] FileViewModel fileViewModel)
         {
             // Khởi tạo biến
             string pathRoot = _appEnvironment.WebRootPath; //Lấy đường dẫn thu mục gốc
@@ -105,11 +109,11 @@ namespace WebApp1.Controllers
             // Trả về View nếu Model không hợp lệ
             if (!ModelState.IsValid)
             {
-                return View(filesUpload);
+                return View(fileViewModel);
             }
 
-            filesUpload.OwnerID = _userManager.GetUserId(User);
-            foreach (IFormFile file in formFiles)
+            fileViewModel.FileUpload.OwnerID = _userManager.GetUserId(User);
+            foreach (IFormFile file in fileViewModel.Files)
             {
                 // Int32 unixTimestamp = (Int32)(DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
                 // Đường dẫn lưu file kèm tên file
@@ -117,7 +121,7 @@ namespace WebApp1.Controllers
                 string ext = Path.GetExtension(file.FileName);
                 string relativePath = "\\Files\\" + id.ToString() + ext;
                 string absolutePath = pathRoot + relativePath;
-                    
+
                 //Ghi file lên server
                 var stream = new FileStream(absolutePath, FileMode.Create);
                 try { await file.CopyToAsync(stream); }
@@ -126,20 +130,20 @@ namespace WebApp1.Controllers
 
                 if (first)
                 {
-                    filesUpload.FilePath = relativePath;
-                    filesUpload.FileName = file.FileName;
-                    filesUpload.UploadDate = DateTime.Now;
-                    _context.Add(filesUpload);
+                    fileViewModel.FileUpload.FilePath = relativePath;
+                    fileViewModel.FileUpload.FileName = file.FileName;
+                    fileViewModel.FileUpload.UploadDate = DateTime.Now;
+                    _context.Add(fileViewModel.FileUpload);
                     first = false;
                 }
                 else
                 {
                     FilesUpload nItems = new FilesUpload();
-                    nItems.MeetingID = filesUpload.MeetingID;
-                    nItems.OwnerID = filesUpload.OwnerID;
+                    nItems.MeetingID = fileViewModel.FileUpload.MeetingID;
+                    nItems.OwnerID = fileViewModel.FileUpload.OwnerID;
                     nItems.FileName = file.FileName;
                     nItems.UploadDate = DateTime.Now;
-                    nItems.Description = filesUpload.Description;
+                    nItems.Description = fileViewModel.FileUpload.Description;
                     nItems.FilePath = relativePath;
                     _context.Add(nItems);
                 }
@@ -148,33 +152,25 @@ namespace WebApp1.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-
-        //[HttpPost]
-        public JsonResult CreateData(string Prefix = "")
-        {
-            var MeetingTitle = (from m in _context.Meeting.ToList()
-                                where m.MeetingTitle.Contains(Prefix)
-                                select new { MeetingTitle = m.MeetingTitle + " - "
-                                + m.MeetingDate?.ToString("dd/MM/yyyy")}).ToList();
-            List<string> result = MeetingTitle.Select(s => (string)s.MeetingTitle).ToList();
-            return Json(result);
-        }
         [HttpPost]
         [ActionName("CreateData")]
         public JsonResult CreateDataYo(string Prefix = "")
         {
             var MeetingTitle = (from m in _context.Meeting.ToList()
-                                select new { MeetingTitle = m.MeetingTitle + " - "
-                                + m.MeetingDate?.ToString("dd/MM/yyyy"), ID = m.MeetingID})
-                                .Where(m => m.MeetingTitle.Contains(Prefix)).ToList();
-            //List<string> result = MeetingTitle.Select(s => (string)s.MeetingTitle).ToList();
+                                select new
+                                {
+                                    MeetingTitle = m.MeetingTitle + " - ngày "
+                                    + m.MeetingDate?.ToString("dd/MM/yyyy"),
+                                    ID = m.MeetingID
+                                })
+                                .Where(m => (m.MeetingTitle.ToLower()).Contains((Prefix ?? "").ToLower())).ToList();
             return Json(MeetingTitle);
         }
 
         // GET: FilesUpload/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            FileViewModel FileVM;
+            FileViewModel_Edit FileVM;
             if (id == null)
             {
                 return NotFound();
@@ -191,9 +187,9 @@ namespace WebApp1.Controllers
 
                 string ownerName = (await _userManager.FindByIdAsync(file.OwnerID))?.BirthName ?? string.Empty;
                 string meetingTitle = (from m in _context.Meeting
-                                        where m.MeetingID == file.MeetingID
-                                        select m).First().MeetingTitle;
-                FileVM = new FileViewModel(file, ownerName, meetingTitle);
+                                       where m.MeetingID == file.MeetingID
+                                       select m).First().MeetingTitle;
+                FileVM = new FileViewModel_Edit(file, ownerName, meetingTitle);
                 FileVM.FileNameWithoutExt = Path.GetFileNameWithoutExtension(file.FileName);
                 FileVM.Extension = Path.GetExtension(file.FileName);
             }
@@ -210,8 +206,7 @@ namespace WebApp1.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("FileID,MeetingID,OwnerID,FileName,UploadDate,Description,FilePath")] FilesUpload filesUpload,
-            FileViewModel fileViewModel)
+        public async Task<IActionResult> Edit(int id, [Bind("")] FileViewModel_Edit fileViewModel)
         {
             if (id != fileViewModel.FileUpload.FileID)
             {

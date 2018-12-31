@@ -1,0 +1,142 @@
+﻿@model IEnumerable<WebApp1.Data.PartyMember>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Danh sách Đảng viên</h1>
+<table class="table C__PartyMember">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.BirthName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PhoneNumber)
+            </th>
+            @*<th>
+                    @Html.DisplayNameFor(model => model.BirthDay)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Gender)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Ethnicity)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Religion)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Country)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.EduLevel)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.JobInfo)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PartyDateInfo)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PartyCardNum)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.MilitaryPoliceRetire)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.OutGoingInfo)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.InComingInfo)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DiedInfo)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.LeaveInfo)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Comment)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Avatar)
+                </th>*@
+            @*<th></th>*@
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            var urlProfile = @Url.Action("Details", "PartyMemberInfo") + "?Id=" + item.Id;
+            <tr onclick="window.location.href='@urlProfile'">
+                <td>
+                    @Html.DisplayFor(modelItem => item.BirthName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PhoneNumber)
+                </td>
+                @*<td>
+                        @Html.DisplayFor(modelItem => item.BirthDay)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Gender)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Ethnicity)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Religion)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Country)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.EduLevel)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.JobInfo)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PartyDateInfo)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PartyCardNum)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.MilitaryPoliceRetire)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.OutGoingInfo)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.InComingInfo)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DiedInfo)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.LeaveInfo)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Comment)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Avatar)
+                    </td>*@
+                @*<td>
+                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                        <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    </td>*@
+            </tr>
+        }
+    </tbody>
+</table>

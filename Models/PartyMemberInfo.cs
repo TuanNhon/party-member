@@ -2,18 +2,24 @@
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Identity;
 
-namespace WebApp1.Data
+namespace WebApp1.Models
 {
-    public class PartyMember : IdentityUser
+    public class PartyMemberInfo
     {
-        [PersonalData, Display(Name = "Họ tên")]
+        [Key]
+        public string Id { get; set; }
+        [PersonalData, Display(Name = "Số di động")]
+        public string PhoneNumber { get; set; }
+        [PersonalData ,Display(Name = "Email")]
+        public string Email { get; set; }
+        [PersonalData]
         public string BirthName { get; set; }
-        [PersonalData, Display(Name = "Ngày sinh"), DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
-        public DateTime? BirthDay { get; set; }
-        [PersonalData, Display(Name = "Giới tính")]
+        [PersonalData, Display(Name = "Họ tên")]
+        public DateTime BirthDay { get; set; }
+        [PersonalData, Display(Name = "Ngày sinh")]
         public string Gender { get; set; }
         // Dân tộc
-        [PersonalData, Display(Name = "Chính trị")]
+        [PersonalData, Display(Name = "Giới tính")]
         public string Ethnicity { get; set; }
         // Tôn giáo
         [PersonalData, Display(Name = "Tôn giáo")]

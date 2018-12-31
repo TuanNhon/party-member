@@ -1,0 +1,78 @@
+﻿@model WebApp1.Data.PartyMember
+
+@{
+    ViewData["Title"] = "Hồ sơ";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="D__PartyMemeber container">
+    <div class="row">
+        <div class="col-4">
+            <h1>Hồ sơ Đảng viên</h1>
+            <h4>Thông tin chi tiết</h4>
+            <hr />
+            <label><b>@Html.DisplayNameFor(model => model.Avatar):</b></label>@Html.DisplayFor(model => model.Avatar)<br />
+        </div>
+        <div class="col-4">
+            <label><b>@Html.DisplayNameFor(model => model.PhoneNumber):</b></label><br />
+            <p>@Html.DisplayFor(model => model.PhoneNumber)</p>
+
+            <label><b>@Html.DisplayNameFor(model => model.Email):</b></label><br />
+            <p>@Html.DisplayFor(model => model.Email)</p>
+
+            <label><b>@Html.DisplayNameFor(model => model.BirthName):</b></label><br />
+            <p>@Html.DisplayFor(model => model.BirthName)</p>
+
+            <label><b>@Html.DisplayNameFor(model => model.BirthDay):</b></label><br />
+            <p>@Html.DisplayFor(model => model.BirthDay)</p>
+
+            <label><b>@Html.DisplayNameFor(model => model.Gender):</b></label><br />
+            <p>@Html.DisplayFor(model => model.Gender)</p>
+
+            <label><b>@Html.DisplayNameFor(model => model.Ethnicity):</b></label><br />
+            <p>@Html.DisplayFor(model => model.Ethnicity)</p>
+
+            <label><b>@Html.DisplayNameFor(model => model.Religion):</b></label><br />
+            <p>@Html.DisplayFor(model => model.Religion)</p>
+
+            <label><b>@Html.DisplayNameFor(model => model.Country):</b></label><br />
+            <p>@Html.DisplayFor(model => model.Country)</p>
+
+            <label><b>@Html.DisplayNameFor(model => model.EduLevel):</b></label><br />
+            <p>@Html.DisplayFor(model => model.EduLevel)</p>
+
+            <label><b>@Html.DisplayNameFor(model => model.JobInfo):</b></label><br />
+            <p>@Html.DisplayFor(model => model.JobInfo)</p>
+        </div>
+        <div class="col-4">
+            <label><b>@Html.DisplayNameFor(model => model.PartyDateInfo):</b></label><br />
+            <p>@Html.DisplayFor(model => model.PartyDateInfo)</p>
+
+            <label><b>@Html.DisplayNameFor(model => model.PartyCardNum):</b></label><br />
+            <p>@Html.DisplayFor(model => model.PartyCardNum)</p>
+
+            <label><b>@Html.DisplayNameFor(model => model.MilitaryPoliceRetire):</b></label><br />
+            <p>@Html.DisplayFor(model => model.MilitaryPoliceRetire)</p>
+
+            <label><b>@Html.DisplayNameFor(model => model.OutGoingInfo):</b></label><br />
+            <p>@Html.DisplayFor(model => model.OutGoingInfo)</p>
+
+            <label><b>@Html.DisplayNameFor(model => model.InComingInfo):</b></label><br />
+            <p>@Html.DisplayFor(model => model.InComingInfo)</p>
+
+            <label><b>@Html.DisplayNameFor(model => model.DiedInfo):</b></label><br />
+            <p>@Html.DisplayFor(model => model.DiedInfo)</p>
+
+            <label><b>@Html.DisplayNameFor(model => model.LeaveInfo):</b></label><br />
+            <p>@Html.DisplayFor(model => model.LeaveInfo)</p>
+
+            <label><b>@Html.DisplayNameFor(model => model.Comment):</b></label><br />
+            <p>@Html.DisplayFor(model => model.Comment)</p>
+        </div>
+    </div>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

@@ -10,6 +10,7 @@ namespace WebApp1.Models
         [Key]
         public int FileID { get; set; }
         // user ID from Meeting table.
+        [Display(Name = "Cuộc họp")]
         public int MeetingID { get; set; }
         // user ID from User table.
         public string OwnerID { get; set; }

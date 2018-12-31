@@ -62,10 +62,15 @@ namespace WebApp1.Controllers
                 return NotFound();
             }
 
+            string topDomain = $"{this.Request.Scheme}://{this.Request.Host}{this.Request.PathBase}"; ;
+            string[] filePreview = { "https://docs.google.com/gview?url=", "&embedded=true" };
             string ownerName = (await _userManager.FindByIdAsync(meeting.OwnerID))?.BirthName;
             filesVM = (from f in _context.FilesUpload
                          where f.MeetingID == meeting.MeetingID
                          select f)?.ToList();
+            filesVM.ForEach(delegate (FilesUpload file) {
+                file.FilePath = $"{filePreview[0]}{topDomain + file.FilePath.Replace('\\', '/')}{filePreview[1]}";
+            });
 
             MeetingVM = new MeetingViewModel(meeting, filesVM, ownerName);
 

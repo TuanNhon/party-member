@@ -92,3 +92,38 @@ body {
 table {
     white-space: nowrap;
 }
+
+table.table tr th,
+table.table tr td {
+    vertical-align: middle;
+    padding: 0;
+}
+table.table thead tr th {
+    vertical-align: middle;
+    padding: 10px 0;
+}
+table.table tr td a {
+    margin: 5px;
+}
+table.table tr td .form-group {
+    margin: 5px 0;
+}
+
+/*#region name */
+/* Custom Css */
+table.table.C__PartyMember tbody tr td {
+    padding: 10px 0;
+}
+table.table.C__PartyMember tbody tr:hover {
+    background-color: lightgray;
+    cursor: pointer;
+}
+
+.D__PartyMemeber .col-4 p{
+    text-align: center
+}
+.D__PartyMemeber .col-4 label{
+    letter-spacing: -1px;
+}
+
+/*#endregion */

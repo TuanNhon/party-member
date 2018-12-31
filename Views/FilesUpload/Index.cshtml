@@ -16,12 +16,12 @@
                 <th scope="col">
                     #
                 </th>
-                <th scope="col">
+                @*<th scope="col">
                     @Html.DisplayNameFor(m => m.MeetingTitle)
                 </th>
                 <th scope="col">
                     @Html.DisplayNameFor(m => m.BirthName)
-                </th>
+                </th>*@
                 <th scope="col">
                     @Html.DisplayNameFor(m => m.FileUpload.FileName)
                 </th>
@@ -44,14 +44,14 @@
                     <th scope="row">
                         @(count++)
                     </th>
-                    <td>
+                    @*<td>
                         @Html.DisplayFor(ModelItem => item.MeetingTitle)
                     </td>
                     <td>
                         @Html.DisplayFor(ModelItem => item.BirthName)
-                    </td>
+                    </td>*@
                     <td>
-                        <a class="docIframe" href="https://docs.google.com/gview?url=https://localhost:80@(item.FileUpload.FilePath)">
+                        <a class="docIframe" href="@(item.FileUpload.FilePath)">
                             @Html.DisplayFor(ModelItem => item.FileUpload.FileName)
                         </a>
                     </td>
@@ -66,9 +66,8 @@
                     </td>*@
                     <td>
                         <div class="form-group">
-                            <a asp-action="Edit" asp-route-id="@item.FileUpload.FileID" class="btn btn-sm btn-primary"><i class="fas fa-edit"></i></a>
-                            <a asp-action="Details" asp-route-id="@item.FileUpload.FileID" class="btn btn-sm btn-info"><i class="fas fa-info-circle"></i></a>
-                            <a asp-action="Delete" asp-route-id="@item.FileUpload.FileID" class="btn btn-sm btn-danger"><i class="fas fa-trash-alt"></i></a>
+                            <a asp-action="Edit" asp-route-id="@item.FileUpload.FileID" class="btn btn-sm btn-primary"><i class="fas fa-edit"> Chỉnh sửa</i></a><br />
+                            <a asp-action="Delete" asp-route-id="@item.FileUpload.FileID" class="btn btn-sm btn-danger"><i class="fas fa-trash-alt"> Xóa</i></a>
                         </div>
                     </td>
                 </tr>

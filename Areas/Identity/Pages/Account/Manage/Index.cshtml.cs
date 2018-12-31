@@ -41,73 +41,46 @@ namespace WebApp1.Areas.Identity.Pages.Account.Manage
         public class InputModel
         {
             #region Thông tin đảng viên
-            [Required]
-            [DataType(DataType.Text)]
-            [Display(Name = "Tên khai sinh")]
+            [Required, DataType(DataType.Text), Display(Name = "Tên khai sinh")]
             public string BirthName { get; set; }
 
-            [Required]
-            [Display(Name = "Ngày sinh")]
-            [DataType(DataType.Date)]
-            public DateTime BirthDay { get; set; }
+            [Display(Name = "Ngày sinh"), DataType(DataType.Date)]
+            public DateTime? BirthDay { get; set; }
 
-            [Required]
-            [DataType(DataType.Text)]
-            [Display(Name = "Giới tính")]
+            [Required, DataType(DataType.Text), Display(Name = "Giới tính")]
             public string Gender { get; set; }
-            [Required]
-            [DataType(DataType.Text)]
-            [Display(Name = "Dân tộc")]
+            [Required, DataType(DataType.Text), Display(Name = "Dân tộc")]
             public string Ethnicity { get; set; }
-            [Required]
-            [DataType(DataType.Text)]
-            [Display(Name = "Tôn giáo")]
+            [Required, DataType(DataType.Text), Display(Name = "Tôn giáo")]
             public string Religion { get; set; }
-            [Required]
-            [DataType(DataType.Text)]
-            [Display(Name = "Quê quán")]
+            [Required, DataType(DataType.Text), Display(Name = "Quê quán")]
             public string Country { get; set; }
-            [Required]
-            [DataType(DataType.Text)]
-            [Display(Name = "Trình độ học vấn")]
+            [Required, DataType(DataType.Text), Display(Name = "Trình độ học vấn")]
             public string EduLevel { get; set; }
-            [DataType(DataType.Text)]
-            [Display(Name = "Thông tin nghề nghiệp")]
+            [DataType(DataType.Text), Display(Name = "Thông tin nghề nghiệp")]
             public string JobInfo { get; set; }
-            [Required]
-            [DataType(DataType.Text)]
-            [Display(Name = "Ngày vào Đảng, ngày chính thức")]
+            [Required, DataType(DataType.Text), Display(Name = "Ngày vào Đảng, ngày chính thức")]
             public string PartyDateInfo { get; set; }
-            [Required]
-            [DataType(DataType.Text)]
-            [Display(Name = "Số thẻ, số LL Đảng viên")]
+            [Required, DataType(DataType.Text), Display(Name = "Số thẻ, số LL Đảng viên")]
             public string PartyCardNum { get; set; }
-            [DataType(DataType.Text)]
-            [Display(Name = "Bộ đội, công an, hưu trí")]
+            [DataType(DataType.Text), Display(Name = "Bộ đội, công an, hưu trí")]
             public string MilitaryPoliceRetire { get; set; }
-            [DataType(DataType.Text)]
-            [Display(Name = "Ngày chuyển đi, đến Đảng bộ cơ sở")]
+            [DataType(DataType.Text), Display(Name = "Ngày chuyển đi, đến Đảng bộ cơ sở")]
             public string OutGoingInfo { get; set; }
-            [DataType(DataType.Text)]
-            [Display(Name = "Ngày chuyển đến, từ Đảng bộ cơ sở")]
+            [DataType(DataType.Text), Display(Name = "Ngày chuyển đến, từ Đảng bộ cơ sở")]
             public string InComingInfo { get; set; }
-            [DataType(DataType.Text)]
-            [Display(Name = "Ngày từ trần, lý do")]
+            [DataType(DataType.Text), Display(Name = "Ngày từ trần, lý do")]
             public string DiedInfo { get; set; }
-            [DataType(DataType.Text)]
-            [Display(Name = "Ngày ra rời Đảng, hình thức ra khỏi Đảng")]
+            [DataType(DataType.Text), Display(Name = "Ngày ra rời Đảng, hình thức ra khỏi Đảng")]
             public string LeaveInfo { get; set; }
-            [DataType(DataType.Text)]
-            [Display(Name = "Ghi chú")]
+            [DataType(DataType.Text), Display(Name = "Ghi chú")]
             public string Comment { get; set; }
             #endregion
 
-            [Required]
-            [EmailAddress]
+            [Required, EmailAddress]
             public string Email { get; set; }
 
-            [Phone]
-            [Display(Name = "Phone number")]
+            [Phone, Display(Name = "Phone number")]
             public string PhoneNumber { get; set; }
         }
 
@@ -173,11 +146,11 @@ namespace WebApp1.Areas.Identity.Pages.Account.Manage
             {
                 user.BirthName = Input.BirthName;
             }
-            if(Input.BirthDay != user.BirthDay)
+            if (Input.BirthDay != user.BirthDay)
             {
                 user.BirthDay = Input.BirthDay;
             }
-            if(Input.Gender != user.Gender)
+            if (Input.Gender != user.Gender)
             {
                 user.Gender = Input.Gender;
             }

@@ -10,6 +10,8 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.DependencyInjection;
 using WebApp1.Data;
 using Microsoft.EntityFrameworkCore;
+using System.Diagnostics;
+using Microsoft.AspNetCore.Hosting.WindowsServices;
 
 namespace WebApp1
 {
@@ -17,7 +19,19 @@ namespace WebApp1
     {
         public static void Main(string[] args)
         {
-            var host = CreateWebHostBuilder(args).Build();
+            //var isService = !(Debugger.IsAttached || args.Contains("--console"));
+
+            //if (isService)//for Deploy
+            //{
+            //    var pathToExe = Process.GetCurrentProcess().MainModule.FileName;
+            //    var pathToContentRoot = Path.GetDirectoryName(pathToExe);
+            //    Directory.SetCurrentDirectory(pathToContentRoot);
+            //}
+
+            var builder = CreateWebHostBuilder(args/*.Where(arg => arg != "--console").ToArray()*/);
+            
+            var host = builder
+                .Build();
 
             using(var scope = host.Services.CreateScope())
             {
@@ -38,7 +52,14 @@ namespace WebApp1
                 }
             }
 
-            host.Run();
+            //if (isService)
+            //{
+            //    host.RunAsService();//for Deploy
+            //}
+            //else
+            //{
+                host.Run();
+            //}
         }
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>

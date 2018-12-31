@@ -151,7 +151,7 @@ namespace WebApp1.Areas.Identity.Pages.Account
                     // Comment = Input.Comment
                     #endregion
 
-                    };
+                };
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {

@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebApp1.Data;
 
 namespace WebApp1.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20181229100105_SplitTotalFunds")]
+    partial class SplitTotalFunds
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -217,8 +219,7 @@ namespace WebApp1.Data.Migrations
 
                     b.Property<int>("TotalFund");
 
-                    b.Property<string>("TransactionUserID")
-                        .IsRequired();
+                    b.Property<string>("TransactionUserID");
 
                     b.Property<DateTime?>("UpatedDate");
 
@@ -263,9 +264,7 @@ namespace WebApp1.Data.Migrations
                 {
                     b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
 
-                    b.Property<string>("Avatar");
-
-                    b.Property<DateTime?>("BirthDay");
+                    b.Property<DateTime>("BirthDay");
 
                     b.Property<string>("BirthName");
 

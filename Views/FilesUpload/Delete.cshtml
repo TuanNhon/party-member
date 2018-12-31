@@ -41,17 +41,17 @@
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Description)
         </dd>
-        <dt class = "col-sm-2">
+        @*<dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.FilePath)
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.FilePath)
-        </dd>
+        </dd>*@
     </dl>
     
     <form asp-action="Delete" method="post">
         <input type="hidden" asp-for="FileID" />
-        <a class="btn btn-danger" onclick="this.parentNode.submit();"><i class="fas fa-trash-alt" style="color: white"></i></a>
+        <button class="btn btn-danger" type="submit"><i class="fas fa-trash-alt" style="color: white"> Xóa</i></button>
         <a asp-action="Index" class="btn btn-primary">Quay lại danh sách</a>
     </form>
 </div>

@@ -2,12 +2,13 @@
 
 @{
     ViewData["Title"] = "Danh sách";
+    var count = 1;
 }
 
 <h1>Danh sách cuộc họp</h1>
 
 <p>
-    <a asp-action="Create" class="btn btn-primary"><i class="fas fa-plus"></i> Thêm cuộc họp</a>
+    <a asp-action="Create" class="btn btn-primary"><i class="fas fa-plus"> Thêm cuộc họp</i></a>
 </p>
 <table class="table">
     <thead>
@@ -15,8 +16,8 @@
             @*<th>
                 @Html.DisplayNameFor(model => model.OwnerID)
             </th>*@
-            <th>
-                @*@Html.DisplayNameFor(model => model.MeetingTitle)*@Tên cuộc họp
+            <th scope="col">
+                @*@Html.DisplayNameFor(model => model.MeetingTitle)*@#
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.MeetingDate)
@@ -33,9 +34,9 @@
             @*<td>
                 @Html.DisplayFor(modelItem => item.OwnerID)
             </td>*@
-            <td>
-                @Html.DisplayFor(modelItem => item.MeetingTitle)
-            </td>
+            <th scope="row">
+                @*@Html.DisplayFor(modelItem => item.MeetingTitle)*@@(count++)
+            </th>
             <td>
                 @Html.DisplayFor(modelItem => item.MeetingDate)
             </td>
@@ -43,10 +44,10 @@
                 @Html.DisplayFor(modelItem => item.Summary)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.MeetingID" class="btn btn-sm btn-primary"><i class="fas fa-edit"></i></a>
-                <a asp-action="Details" asp-route-id="@item.MeetingID" class="btn btn-sm btn-info"><i class="fas fa-info-circle"></i></a>
-                <a asp-action="Delete" asp-route-id="@item.MeetingID" class="btn btn-sm btn-danger"><i class="fas fa-trash-alt"></i></a>
-                <a asp-controller="FilesUpload" asp-action="Create" asp-route-MeetingID="@item.MeetingID" title="Thêm tài liệu" class="btn btn-sm btn-success"><i class="fas fa-plus"></i> Files</a>
+                <div class="form-group">
+                    <a asp-action="Details" asp-route-id="@item.MeetingID" class="btn btn-sm btn-info"><i class="fas fa-info-circle"> Xem Tài liệu</i></a><br />
+                    <a asp-action="Edit" asp-route-id="@item.MeetingID" class="btn btn-sm btn-primary"><i class="fas fa-edit"> Chỉnh sửa cuộc họp</i></a>
+                </div>
             </td>
         </tr>
 }

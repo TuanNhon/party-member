@@ -1,4 +1,4 @@
-﻿@model WebApp1.ViewModels.FileViewModel
+﻿@model WebApp1.ViewModels.FileViewModel_Edit
 
 @{
     ViewData["Title"] = "Sửa";
@@ -19,11 +19,7 @@
             <input type="hidden" asp-for="@Model.FileUpload.FilePath" />
             <input type="hidden" asp-for="@Model.FileUpload.UploadDate" />
             <input type="hidden" asp-for="@Model.Extension" />
-            <div class="form-group">
-                <label asp-for="@Model.BirthName" class="control-label"></label>
-                <input asp-for="@Model.BirthName" type="text" class="form-control" disabled/>
-                <span asp-validation-for="@Model.BirthName" class="text-danger"></span>
-            </div>
+            <input type="hidden" asp-for="@Model.BirthName" />
             <div class="form-group ui-widget">
                 <label asp-for="@Model.MeetingTitle" class="control-label"></label>
                 <input asp-for="@Model.MeetingTitle" type="text" class="form-control" />
@@ -40,7 +36,7 @@
                 <span asp-validation-for="@Model.FileUpload.Description" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Lưu" class="btn btn-primary" />
+                <button type="submit" class="btn btn-primary"><i class="fas fa-save"> Lưu</i></button>
             </div>
         </form>
     </div>

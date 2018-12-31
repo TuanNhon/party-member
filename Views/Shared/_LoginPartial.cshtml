@@ -1,29 +1,46 @@
 @using Microsoft.AspNetCore.Identity
 @inject SignInManager<PartyMember> SignInManager
 @inject UserManager<PartyMember> UserManager
-
 <ul class="navbar-nav">
-@if (SignInManager.IsSignedIn(User))
-{
-    <li class="nav-item">
-        <a  class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index"
-            title="Manage">
-            Xin chào @User.Identity.Name!
-        </a>
-    </li>
-    <li class="nav-item">
-        <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/", new { area = "" })" method="post" >
-            <button  type="submit" class="nav-link btn btn-link text-dark">Đăng xuất</button>
-        </form>
-    </li>
-}
-else
-{
-    <li class="nav-item">
-        <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Đăng ký</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Đăng nhập</a>
-    </li>
-}
+    @if (SignInManager.IsSignedIn(User))
+    {
+        #region code handle
+        var objs = UserManager.GetRolesAsync(await UserManager.FindByNameAsync(UserManager.GetUserName(User)));
+        IEnumerable<string> list = objs.Result as IEnumerable<string>;
+        var UserName = (await UserManager.GetUserAsync(User)).BirthName ?? "Đảng viên";
+        if(list.Count() != 0)
+        {
+            if (list.First() == "MeetingAdministrators")
+            {
+                UserName = "Bí thư";
+            }
+            else if (list.First() == "MeetingManagers")
+            {
+                UserName = "Thủ Quỹ";
+            }
+        }
+        #endregion
+
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index"
+               title="Manage">
+                Xin chào @UserName !
+            </a>
+        </li>
+        <li class="nav-item">
+            <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/", new { area = "" })" method="post">
+                <button type="submit" class="nav-link btn btn-link text-dark">Đăng xuất</button>
+            </form>
+        </li>
+
+    }
+    else
+    {
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Đăng ký</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Đăng nhập</a>
+        </li>
+    }
 </ul>

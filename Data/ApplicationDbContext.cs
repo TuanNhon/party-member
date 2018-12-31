@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -17,5 +17,6 @@ namespace WebApp1.Data
         public DbSet<WebApp1.Data.PartyMember> PartyMember { get; set; }
         public DbSet<WebApp1.Models.FilesUpload> FilesUpload { get; set; }
         public DbSet<WebApp1.Models.Funds> Funds { get; set; }
+        public DbSet<WebApp1.Models.TotalFunds> TotalFunds { get; set; }
     }
 }

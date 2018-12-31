@@ -22,11 +22,11 @@ namespace WebApp1.Data
                 // dotnet user-secrets set SeedUserPW <pw>
                 // The admin user can do anything
 
-                var adminID = await EnsureUser(serviceProvider, testUserPw, "admin@cntt.epu.com");
+                var adminID = await EnsureUser(serviceProvider, testUserPw, "Bí thư", "admin@cntt.epu.com");
                 await EnsureRole(serviceProvider, adminID, Constants.MeetingAdministratorsRole);
 
                 // allowed user can create and edit Meetings that they create
-                var uid = await EnsureUser(serviceProvider, testUserPw, "manager@cntt.epu.com");
+                var uid = await EnsureUser(serviceProvider, testUserPw, "Thủ quỹ", "manager@cntt.epu.com");
                 await EnsureRole(serviceProvider, uid, Constants.MeetingManagersRole);
 
                 SeedDB(context, adminID);
@@ -34,14 +34,15 @@ namespace WebApp1.Data
         }
 
         private static async Task<string> EnsureUser(IServiceProvider serviceProvider,
-                                                    string testUserPw, string UserName)
+                                                    string testUserPw, string userName, string email = "")
         {
             var userManager = serviceProvider.GetService<UserManager<PartyMember>>();
 
-            var user = await userManager.FindByNameAsync(UserName);
+            var user = await userManager.FindByNameAsync(email);
             if (user == null)
             {
-                user = new PartyMember { UserName = UserName };
+                user = new PartyMember { UserName = email };
+                user.Email = email;
                 await userManager.CreateAsync(user, testUserPw);
                 var code = await userManager.GenerateEmailConfirmationTokenAsync(user);
                 await userManager.ConfirmEmailAsync(user, code);
@@ -71,98 +72,108 @@ namespace WebApp1.Data
         }
         public static void SeedDB(ApplicationDbContext context, string adminID)
         {
-            if (context.Meeting.Any())
+            if (!context.Meeting.Any())
             {
-                return;   // DB has been seeded
+                context.Meeting.AddRange(
+                    // spellchecker: disable
+                    new Meeting
+                    {
+                        MeetingTitle = "Cuộc họp số 1",
+                        OwnerID = adminID,
+                        MeetingDate = DateTime.Parse("2015-12-17"),
+                        Summary = "Cuộc họp công nghệ lần thứ nhất"
+                    },
+                    new Meeting
+                    {
+                        MeetingTitle = "Cuộc họp số 2",
+                        OwnerID = adminID,
+                        MeetingDate = DateTime.Parse("2015-12-27"),
+                        Summary = "Quản lý Đảng viên"
+                    },
+                    new Meeting
+                    {
+                        MeetingTitle = "Cuộc họp số 3",
+                        OwnerID = adminID,
+                        MeetingDate = DateTime.Parse("2015-11-17"),
+                        Summary = "Kế hoạch phát triển khoa Công nghệ thông tin"
+                    },
+                    new Meeting
+                    {
+                        MeetingTitle = "Cuộc họp số 4",
+                        OwnerID = adminID,
+                        MeetingDate = DateTime.Parse("2016-12-27"),
+                        Summary = "Chào mừng ngày nhà giáo Việt Nam"
+                    },
+                    new Meeting
+                    {
+                        MeetingTitle = "Cuộc họp số 5",
+                        OwnerID = adminID,
+                        MeetingDate = DateTime.Parse("2016-02-17"),
+                        Summary = "Lập kế hoạch phát triển Đảng viên"
+                    },
+                    new Meeting
+                    {
+                        MeetingTitle = "Cuộc họp số 6",
+                        OwnerID = adminID,
+                        MeetingDate = DateTime.Parse("2016-04-15"),
+                        Summary = "Cuộc cách mạng 4.0"
+                    },
+                    new Meeting
+                    {
+                        MeetingTitle = "Cuộc họp số 7",
+                        OwnerID = adminID,
+                        MeetingDate = DateTime.Parse("2016-05-22"),
+                        Summary = "Tái đổi mới cơ cấu khoa Công nghệ thông tin"
+                    },
+                    new Meeting
+                    {
+                        MeetingTitle = "Cuộc họp số 8",
+                        OwnerID = adminID,
+                        MeetingDate = DateTime.Parse("2016-08-08"),
+                        Summary = "Ngành học máy và trí tuệ nhân tạo"
+                    },
+                    new Meeting
+                    {
+                        MeetingTitle = "Cuộc họp số 9",
+                        OwnerID = adminID,
+                        MeetingDate = DateTime.Parse("2017-01-17"),
+                        Summary = "Cuộc họp công nghệ lần thứ hai"
+                    },
+                    new Meeting
+                    {
+                        MeetingTitle = "Cuộc họp số 10",
+                        OwnerID = adminID,
+                        MeetingDate = DateTime.Parse("2017-06-10"),
+                        Summary = "Liên hoan văn nghệ trường Đại học Điện Lức"
+                    },
+                    new Meeting
+                    {
+                        MeetingTitle = "Cuộc họp số 11",
+                        OwnerID = adminID,
+                        MeetingDate = DateTime.Parse("2018-11-29"),
+                        Summary = "Cuộc thi tiếng hát giáo viên"
+                    },
+                    new Meeting
+                    {
+                        MeetingTitle = "Cuộc họp số 12",
+                        OwnerID = adminID,
+                        MeetingDate = DateTime.Parse("2018-10-30"),
+                        Summary = "Nghị quyết trung ương Đảng lần thứ 4"
+                    }
+                 );
             }
 
-            context.Meeting.AddRange(
-                // spellchecker: disable
-                new Meeting
-                {
-                    MeetingTitle = "Cuộc họp số 1",
-                    OwnerID = adminID,
-                    MeetingDate = DateTime.Parse("2015-12-17"),
-                    Summary = "Cuộc họp công nghệ lần thứ nhất"
-                },
-                new Meeting
-                {
-                    MeetingTitle = "Cuộc họp số 2",
-                    OwnerID = adminID,
-                    MeetingDate = DateTime.Parse("2015-12-27"),
-                    Summary = "Quản lý Đảng viên"
-                },
-                new Meeting
-                {
-                    MeetingTitle = "Cuộc họp số 3",
-                    OwnerID = adminID,
-                    MeetingDate = DateTime.Parse("2015-11-17"),
-                    Summary = "Kế hoạch phát triển khoa Công nghệ thông tin"
-                },
-                new Meeting
-                {
-                    MeetingTitle = "Cuộc họp số 4",
-                    OwnerID = adminID,
-                    MeetingDate = DateTime.Parse("2016-12-27"),
-                    Summary = "Chào mừng ngày nhà giáo Việt Nam"
-                },
-                new Meeting
-                {
-                    MeetingTitle = "Cuộc họp số 5",
-                    OwnerID = adminID,
-                    MeetingDate = DateTime.Parse("2016-02-17"),
-                    Summary = "Lập kế hoạch phát triển Đảng viên"
-                },
-                new Meeting
-                {
-                    MeetingTitle = "Cuộc họp số 6",
-                    OwnerID = adminID,
-                    MeetingDate = DateTime.Parse("2016-04-15"),
-                    Summary = "Cuộc cách mạng 4.0"
-                },
-                new Meeting
-                {
-                    MeetingTitle = "Cuộc họp số 7",
-                    OwnerID = adminID,
-                    MeetingDate = DateTime.Parse("2016-05-22"),
-                    Summary = "Tái đổi mới cơ cấu khoa Công nghệ thông tin"
-                },
-                new Meeting
-                {
-                    MeetingTitle = "Cuộc họp số 8",
-                    OwnerID = adminID,
-                    MeetingDate = DateTime.Parse("2016-08-08"),
-                    Summary = "Ngành học máy và trí tuệ nhân tạo"
-                },
-                new Meeting
-                {
-                    MeetingTitle = "Cuộc họp số 9",
-                    OwnerID = adminID,
-                    MeetingDate = DateTime.Parse("2017-01-17"),
-                    Summary = "Cuộc họp công nghệ lần thứ hai"
-                },
-                new Meeting
-                {
-                    MeetingTitle = "Cuộc họp số 10",
-                    OwnerID = adminID,
-                    MeetingDate = DateTime.Parse("2017-06-10"),
-                    Summary = "Liên hoan văn nghệ trường Đại học Điện Lức"
-                },
-                new Meeting
-                {
-                    MeetingTitle = "Cuộc họp số 11",
-                    OwnerID = adminID,
-                    MeetingDate = DateTime.Parse("2018-11-29"),
-                    Summary = "Cuộc thi tiếng hát giáo viên"
-                },
-                new Meeting
-                {
-                    MeetingTitle = "Cuộc họp số 12",
-                    OwnerID = adminID,
-                    MeetingDate = DateTime.Parse("2018-10-30"),
-                    Summary = "Nghị quyết trung ương Đảng lần thứ 4"
-                }
-             );
+            if (!context.TotalFunds.Any())
+            {
+                context.TotalFunds.AddRange(
+                    new TotalFunds
+                    {
+                        TotalFundsValue = 5000000
+                    }
+                );
+
+            }
+
             context.SaveChanges();
         }
     }

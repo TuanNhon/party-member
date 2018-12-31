@@ -31,48 +31,56 @@
         </dd>
     </dl>
     <h4>Tài liệu trong cuộc họp</h4>
-    <div class="table-responsive-md">
-        <table class="table">
-            <thead>
-                <tr>
-                    <th scope="col">
-                        #
-                    </th>
-                    <th scope="col">
-                        @Html.DisplayNameFor(m => m.Files[0].FileName)
-                    </th>
-                    <th scope="col">
-                        @Html.DisplayNameFor(m => m.Files[0].UploadDate)
-                    </th>
-                    <th scope="col">
-                        @Html.DisplayNameFor(m => m.Files[0].Description)
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model.Files)
-                {
+    @if (Model.Files.Count != 0)
+    {
+        <div class="table-responsive-md">
+            <table class="table">
+                <thead>
                     <tr>
-                        <th scope="row">
-                            @(count++)
+                        <th scope="col">
+                            #
                         </th>
-                        <td>
-                            @Html.DisplayFor(ModelItem => item.FileName)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(ModelItem => item.UploadDate)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(ModelItem => item.Description)
-                        </td>
+                        <th scope="col">
+                            @Html.DisplayNameFor(m => m.Files[0].FileName)
+                        </th>
+                        <th scope="col">
+                            @Html.DisplayNameFor(m => m.Files[0].UploadDate)
+                        </th>
+                        <th scope="col">
+                            @Html.DisplayNameFor(m => m.Files[0].Description)
+                        </th>
                     </tr>
-                }
-            </tbody>
-        </table>
-    </div>
-
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Files)
+                    {
+                        <tr>
+                            <th scope="row">
+                                @(count++)
+                            </th>
+                            <td>
+                                <a class="docIframe" href="@(item.FilePath)">
+                                    @Html.DisplayFor(ModelItem => item.FileName)
+                                </a>
+                            </td>
+                            <td>
+                                @Html.DisplayFor(ModelItem => item.UploadDate)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(ModelItem => item.Description)
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        @("Cuộc họp không có tài liệu!")
+    }
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.Meeting.MeetingID">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Edit" asp-route-id="@Model.Meeting.MeetingID">Chỉnh sửa</a> |
+    <a asp-action="Index">Quay lại danh sách cuộc họp</a>
 </div>

@@ -1,4 +1,4 @@
-﻿@model WebApp1.Models.Funds
+﻿@model WebApp1.ViewModels.FundsViewModel
 
 @{
     ViewData["Title"] = "Thêm";
@@ -12,37 +12,43 @@
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            @*<div class="form-group">
-                <label asp-for="OwnerID" class="control-label"></label>
-                <input asp-for="OwnerID" class="form-control" />
-                <span asp-validation-for="OwnerID" class="text-danger"></span>
-            </div>*@
+            <input type="hidden" asp-for="_funds.OwnerID" class="form-control" />
+            <input type="hidden" asp-for="_funds.TransactionUserID" class="form-control" />
             <div class="form-group">
-                <label asp-for="Currency" class="control-label"></label>
-                <input asp-for="Currency" class="form-control" />
-                <span asp-validation-for="Currency" class="text-danger"></span>
+                <label asp-for="_funds.TransactionUserID" class="control-label"></label>
+                <input asp-for="TransactionUserName" class="form-control" />
+                <span asp-validation-for="_funds.TransactionUserID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="_funds.Currency" class="control-label"></label>
+                <input asp-for="_funds.Currency" class="form-control" />
+                <span asp-validation-for="_funds.Currency" class="text-danger"></span>
             </div>
             <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="isCollect" type="radio" value="true" name="isCollect"/> Thu Quỹ
-                    <br />
-                    <input class="form-check-input" asp-for="isCollect" type="radio" value="false" name="isCollect"/> Nộp Quỹ
+                <label asp-for="_funds.isCollect" class="form-check-label">
+                    <input class="form-check-input" asp-for="_funds.isCollect" type="radio" value="true" name="_funds.isCollect" /> Thu Quỹ
                 </label>
+                <br />
+                <label asp-for="_funds.isCollect" class="form-check-label">
+                    <input class="form-check-input" asp-for="_funds.isCollect" type="radio" value="false" name="_funds.isCollect" /> Nộp Quỹ
+                </label>
+                <br />
+                <span asp-validation-for="_funds.isCollect" class="text-danger"></span>
             </div>
             @*<div class="form-group">
-                <label asp-for="TotalFund" class="control-label"></label>
-                <input asp-for="TotalFund" class="form-control" />
-                <span asp-validation-for="TotalFund" class="text-danger"></span>
-            </div>*@
+            <label asp-for="TotalFund" class="control-label"></label>
+            <input asp-for="TotalFund" class="form-control" />
+            <span asp-validation-for="TotalFund" class="text-danger"></span>
+        </div>*@
             <div class="form-group">
-                <label asp-for="UpatedDate" class="control-label"></label>
-                <input asp-for="UpatedDate" class="form-control" />
-                <span asp-validation-for="UpatedDate" class="text-danger"></span>
+                <label asp-for="_funds.UpatedDate" class="control-label"></label>
+                <input asp-for="_funds.UpatedDate" class="form-control" value="@DateTime.UtcNow.Date.ToString("yyyy-MM-dd")" />
+                <span asp-validation-for="_funds.UpatedDate" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
-                <span asp-validation-for="Description" class="text-danger"></span>
+                <label asp-for="_funds.Description" class="control-label"></label>
+                <input asp-for="_funds.Description" class="form-control" />
+                <span asp-validation-for="_funds.Description" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Thêm" class="btn btn-primary" />
@@ -54,6 +60,8 @@
 <div>
     <a asp-action="Index" class="btn btn-primary">Quay lại</a>
 </div>
+
+<script src="~/js/TransactionUser.js" asp-append-version="true"></script>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
