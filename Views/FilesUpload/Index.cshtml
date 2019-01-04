@@ -2,77 +2,174 @@
 
 @{
     ViewData["Title"] = "Danh sách";
+    var listDocType = ViewBag.ListDocType;
+    var listIscoming = ViewBag.ListIscoming;
+    var searchString = ViewBag.SearchString;
+    var iscoming = ViewBag.Iscoming;
+    var docType = ViewBag.DocType;
+    var fromDate = ViewBag.FromDate;
+    var toDate = ViewBag.ToDate;
+    toDate = toDate != null ? toDate : @DateTime.Today.ToString("yyyy-MM-dd");
     var count = 1;
 }
+<div class="container">
+    <div class="row">
+        <div class="col-4">
+            <h1>Danh sách tài liệu</h1>
+            <p>
+                <a asp-action="Create" class="btn btn-primary"><i class="fas fa-plus"></i> Thêm tài liệu</a>
+            </p>
+        </div>
+        <div class="col-8">
+            <form asp-action="Index" class="row" method="get">
+                <div class="col-4">
+                    <label for="SearchString">Tìm kiếm tên:</label><br />
+                    <input id="SearchString" type="search" name="searchString"
+                        value="@searchString" class="form-control"/>
+                </div>
+                <div class="col-4">
+                    <label for="Iscoming">Chiều văn bản:</label><br />
+                    <select id="Iscoming" class="form-control" name="Iscoming">
+                        @foreach (var item in listIscoming)
+                        {
+                            if (item == iscoming)
+                            {
+                                <option value="@item" selected>@item</option>
+                            }
+                            else
+                            {
+                                <option value="@item">@item</option>
+                            }
+                        }
+                    </select>
+                </div>
+                <div class="col-4">
+                    <label for="DocType">Loại tài liệu:</label><br />
+                    <select id="DocType" class="form-control" name="DocType">
+                        @foreach (var item in listDocType)
+                        {
+                            if (item == docType)
+                            {
+                                <option value="@item" selected>@item</option>
+                            }
+                            else
+                            {
+                                <option value="@item">@item</option>
+                            }
+                        }
+                    </select>
+                </div>
+                <div class="col-4">
+                    <label for="fromDate">Từ:</label>
+                    <input id="fromDate" type="date" class="form-control" name="fromDate" value="@fromDate" />
+                </div>
+                <div class="col-4">
+                    <label for="toDate">Đến:</label>
+                    <input id="toDate" type="date" class="form-control" name="toDate" value='@toDate' />
+                </div>
+                <div class="col-4">
+                    <label class="col-12">&nbsp;</label>
+                    <input type="submit" name="name" class="btn btn-light col-5" value="Tìm kiếm" />
+                    <a class="btn btn-light col-6" asp-controller="FilesUpload" asp-action="Index" />Xóa bộ lọc</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<hr />
+<div class="container">
+    <div class="row">
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">
+                            #
+                        </th>
+                        @*<th scope="col">
+                            @Html.DisplayNameFor(m => m.MeetingTitle)
+                        </th>
+                        <th scope="col">
+                            @Html.DisplayNameFor(m => m.BirthName)
+                        </th>*@
+                        <th scope="col">
+                            @Html.DisplayNameFor(m => m.FileUpload.FileName)
+                        </th>
+                        <th scope="col">
+                            @Html.DisplayNameFor(m => m.FileUpload.IsIncoming)
+                        </th>
+                        <th scope="col">
+                            @Html.DisplayNameFor(m => m.FileUpload.DocType)
+                        </th>
+                        <th scope="col">
+                            @Html.DisplayNameFor(m => m.FileUpload.UploadDate)
+                        </th>
+                        <th scope="col">
+                            @Html.DisplayNameFor(m => m.FileUpload.Description)
+                        </th>
+                        @*<th scope="col">
+                            @Html.DisplayNameFor(m => m.FileUpload.FilePath)
+                        </th>*@
+                        <th scope="col">Thao tác</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <th scope="row">
+                                @(count++)
+                            </th>
+                            @*<td>
+                                @Html.DisplayFor(ModelItem => item.MeetingTitle)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(ModelItem => item.BirthName)
+                            </td>*@
+                            <td>
+                                <a class="docIframe" href="@(item.FileUpload.FilePath)">
+                                    @Html.DisplayFor(ModelItem => item.FileUpload.FileName)
+                                </a>
+                            </td>
+                            <td>
+                                @switch (item.FileUpload.IsIncoming)
+                                {
+                                    case true:
+                                        @("Văn bản đến")
+                                        break;
+                                    case false:
+                                        @("Văn bản đi")
+                                        break;
+                                    default:
+                                        break;
+                                }
+                            </td>
 
-<h1>Danh sách tài liệu</h1>
-<p>
-    <a asp-action="Create" class="btn btn-primary"><i class="fas fa-plus"></i> Thêm tài liệu</a>
-</p>
-<div class="table-responsive-md">
-    <table class="table">
-        <thead>
-            <tr>
-                <th scope="col">
-                    #
-                </th>
-                @*<th scope="col">
-                    @Html.DisplayNameFor(m => m.MeetingTitle)
-                </th>
-                <th scope="col">
-                    @Html.DisplayNameFor(m => m.BirthName)
-                </th>*@
-                <th scope="col">
-                    @Html.DisplayNameFor(m => m.FileUpload.FileName)
-                </th>
-                <th scope="col">
-                    @Html.DisplayNameFor(m => m.FileUpload.UploadDate)
-                </th>
-                <th scope="col">
-                    @Html.DisplayNameFor(m => m.FileUpload.Description)
-                </th>
-                @*<th scope="col">
-                    @Html.DisplayNameFor(m => m.FileUpload.FilePath)
-                </th>*@
-                <th scope="col">Thao tác</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
-                <tr>
-                    <th scope="row">
-                        @(count++)
-                    </th>
-                    @*<td>
-                        @Html.DisplayFor(ModelItem => item.MeetingTitle)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(ModelItem => item.BirthName)
-                    </td>*@
-                    <td>
-                        <a class="docIframe" href="@(item.FileUpload.FilePath)">
-                            @Html.DisplayFor(ModelItem => item.FileUpload.FileName)
-                        </a>
-                    </td>
-                    <td>
-                        @Html.DisplayFor(ModelItem => item.FileUpload.UploadDate)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(ModelItem => item.FileUpload.Description)
-                    </td>
-                    @*<td>
-                        @Html.DisplayFor(ModelItem => item.FileUpload.FilePath)
-                    </td>*@
-                    <td>
-                        <div class="form-group">
-                            <a asp-action="Edit" asp-route-id="@item.FileUpload.FileID" class="btn btn-sm btn-primary"><i class="fas fa-edit"> Chỉnh sửa</i></a><br />
-                            <a asp-action="Delete" asp-route-id="@item.FileUpload.FileID" class="btn btn-sm btn-danger"><i class="fas fa-trash-alt"> Xóa</i></a>
-                        </div>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
+                            <td>
+                                @Html.DisplayFor(ModelItem => item.FileUpload.DocType)
+                            </td>
+
+                            <td>
+                                @Html.DisplayFor(ModelItem => item.FileUpload.UploadDate)
+                            </td>
+
+                            <td>
+                                @Html.DisplayFor(ModelItem => item.FileUpload.Description)
+                            </td>
+                            @*<td>
+                                @Html.DisplayFor(ModelItem => item.FileUpload.FilePath)
+                            </td>*@
+                            <td>
+                                <div class="form-group">
+                                    <a asp-action="Edit" asp-route-id="@item.FileUpload.FileID" class="btn btn-sm btn-primary"><i class="fas fa-edit"> Chỉnh sửa</i></a><br />
+                                    <a asp-action="Delete" asp-route-id="@item.FileUpload.FileID" class="btn btn-sm btn-danger"><i class="fas fa-trash-alt"> Xóa</i></a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
 

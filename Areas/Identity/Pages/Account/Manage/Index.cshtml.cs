@@ -77,10 +77,10 @@ namespace WebApp1.Areas.Identity.Pages.Account.Manage
             public string Comment { get; set; }
             #endregion
 
-            [Required, EmailAddress]
+            [Required, EmailAddress, Display(Name = "Email")]
             public string Email { get; set; }
 
-            [Phone, Display(Name = "Phone number")]
+            [Phone, Display(Name = "Số điện thoại")]
             public string PhoneNumber { get; set; }
         }
 

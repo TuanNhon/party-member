@@ -38,7 +38,7 @@ namespace WebApp1.ViewModels
         public string Extension { get; set; }
         [Display(Name = "Tên tài liệu")]
         public string FileNameWithoutExt { get; set; }
-        [Required]
+        [Required, Display(Name = "Tài liệu")]
         public List<IFormFile> Files { get; set; }
         
     }

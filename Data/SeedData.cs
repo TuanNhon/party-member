@@ -41,7 +41,7 @@ namespace WebApp1.Data
             var user = await userManager.FindByNameAsync(email);
             if (user == null)
             {
-                user = new PartyMember { UserName = email };
+                user = new PartyMember() { UserName = email };
                 user.Email = email;
                 await userManager.CreateAsync(user, testUserPw);
                 var code = await userManager.GenerateEmailConfirmationTokenAsync(user);

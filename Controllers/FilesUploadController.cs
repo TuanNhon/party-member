@@ -36,20 +36,36 @@ namespace WebApp1.Controllers
             _appEnvironment = hostingEnvironment;
         }
 
-        // GET: FilesUpload
-        public async Task<IActionResult> Index()
+        // GET: FilesUpload/Index?searchString=&isComing=&docType=
+        public async Task<IActionResult> Index(string searchString, string iscoming, string docType,
+            DateTime? fromDate, DateTime? toDate)
         {
+            // Init variable
             var listFiles = new List<FileViewModel>();
             string topDomain = $"{this.Request.Scheme}://{this.Request.Host}{this.Request.PathBase}"; ;
             string[] filePreview = { "https://docs.google.com/gview?url=", "&embedded=true" };
+            //string[] filePreview = { "https://view.officeapps.live.com/op/embed.aspx?src=", "&embedded=true" };
+
+            var listDocType = (from dT in _context.FilesUpload
+                               select dT.DocType).Distinct().ToList();
+            listDocType.Insert(0, "Tất cả");
+
+            List<string> listIscoming = new List<string>() { "Tất cả", "Đến", "Đi", "Không" };
+
+            // Code logic
             try
             {
                 (await _context.FilesUpload.ToListAsync()).ForEach(async file =>
                 {
                     string ownerName = (await _userManager.FindByIdAsync(file.OwnerID))?.BirthName ?? string.Empty;
-                    string meetingTitle = (from m in _context.Meeting
-                                           where m.MeetingID == file.MeetingID
-                                           select m).First().MeetingTitle;
+                    string meetingTitle;
+                    if (file.MeetingID != null)
+                    {
+                        meetingTitle = (from m in _context.Meeting
+                                        where m.MeetingID == file.MeetingID
+                                        select m).First().MeetingTitle;
+                    }
+                    else meetingTitle = "";
                     file.FilePath = $"{filePreview[0]}{topDomain + file.FilePath.Replace('\\', '/')}{filePreview[1]}";
                     listFiles.Add(new FileViewModel(file, ownerName, meetingTitle));
                 });
@@ -58,6 +74,50 @@ namespace WebApp1.Controllers
             {
                 throw ex;
             }
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                listFiles = listFiles.Where(lF => lF.FileUpload.FileName.Contains(searchString)).ToList();
+            }
+
+            switch (iscoming)
+            {
+                case "Đến":
+                    listFiles = listFiles.Where(lF => lF.FileUpload.IsIncoming == true).ToList();
+                    break;
+                case "Đi":
+                    listFiles = listFiles.Where(lF => lF.FileUpload.IsIncoming == false).ToList();
+                    break;
+                case "Không":
+                    listFiles = listFiles.Where(lF => lF.FileUpload.IsIncoming == null).ToList();
+                    break;
+                default:
+                    break;
+            }
+
+            if (!String.IsNullOrEmpty(docType) && docType != "Tất cả")
+            {
+                listFiles = listFiles.Where(lF => lF.FileUpload.DocType == docType).ToList();
+            }
+
+            if(fromDate != null)
+            {
+                listFiles = listFiles.Where(lF => lF.FileUpload.UploadDate >= fromDate).ToList();
+                ViewBag.FromDate = ((DateTime)fromDate).ToString("yyyy-MM-dd");
+            }
+
+            if(toDate != null)
+            {
+                listFiles = listFiles.Where(lF => lF.FileUpload.UploadDate <= toDate).ToList();
+                ViewBag.ToDate = ((DateTime)toDate).ToString("yyyy-MM-dd"); ;
+            }
+
+            // Return view
+            ViewBag.ListDocType = listDocType;
+            ViewBag.ListIscoming = listIscoming;
+            ViewBag.SearchString = searchString ?? "";
+            ViewBag.DocType = docType ?? "";
+            ViewBag.Iscoming = iscoming;
             return View(listFiles);
         }
 
@@ -102,54 +162,65 @@ namespace WebApp1.Controllers
         public async Task<IActionResult> Create(
             [Bind("FileUpload,BirthName,MeetingTitle,Extension,FileNameWithoutExt,Files")] FileViewModel fileViewModel)
         {
-            // Khởi tạo biến
-            string pathRoot = _appEnvironment.WebRootPath; //Lấy đường dẫn thu mục gốc
-            bool first = true;
-
-            // Trả về View nếu Model không hợp lệ
-            if (!ModelState.IsValid)
+            try
             {
-                return View(fileViewModel);
-            }
+                // Khởi tạo biến
+                string pathRoot = _appEnvironment.WebRootPath; //Lấy đường dẫn thu mục gốc
+                bool first = true;
 
-            fileViewModel.FileUpload.OwnerID = _userManager.GetUserId(User);
-            foreach (IFormFile file in fileViewModel.Files)
+                // Trả về View nếu Model không hợp lệ
+                if (!ModelState.IsValid)
+                {
+                    return View(fileViewModel);
+                }
+
+                fileViewModel.FileUpload.OwnerID = _userManager.GetUserId(User);
+                foreach (IFormFile file in fileViewModel.Files)
+                {
+                    // Int32 unixTimestamp = (Int32)(DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
+                    // Đường dẫn lưu file kèm tên file
+                    Guid id = Guid.NewGuid();
+                    string ext = Path.GetExtension(file.FileName);
+                    string relativePath = "\\Files\\" + id.ToString() + ext;
+                    string absolutePath = pathRoot + relativePath;
+
+                    //Ghi file lên server
+                    var stream = new FileStream(absolutePath, FileMode.Create);
+                    try { await file.CopyToAsync(stream); }
+                    catch (Exception ex) { throw ex; }
+                    finally { if (stream != null) stream.Close(); }
+
+                    if (first)
+                    {
+                        fileViewModel.FileUpload.FilePath = relativePath;
+                        fileViewModel.FileUpload.FileName = file.FileName;
+                        fileViewModel.FileUpload.UploadDate = DateTime.Now;
+                        _context.Add(fileViewModel.FileUpload);
+                        first = false;
+                    }
+                    else
+                    {
+                        FilesUpload nItems = new FilesUpload();
+                        nItems.MeetingID = fileViewModel.FileUpload.MeetingID;
+                        nItems.OwnerID = fileViewModel.FileUpload.OwnerID;
+                        nItems.FileName = file.FileName;
+                        nItems.UploadDate = DateTime.Now;
+                        nItems.Description = fileViewModel.FileUpload.Description;
+                        nItems.DocType = fileViewModel.FileUpload.DocType;
+                        nItems.IsIncoming = fileViewModel.FileUpload.IsIncoming;
+                        nItems.FilePath = relativePath;
+                        _context.Add(nItems);
+                    }
+                }
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            catch (Exception ex)
             {
-                // Int32 unixTimestamp = (Int32)(DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
-                // Đường dẫn lưu file kèm tên file
-                Guid id = Guid.NewGuid();
-                string ext = Path.GetExtension(file.FileName);
-                string relativePath = "\\Files\\" + id.ToString() + ext;
-                string absolutePath = pathRoot + relativePath;
-
-                //Ghi file lên server
-                var stream = new FileStream(absolutePath, FileMode.Create);
-                try { await file.CopyToAsync(stream); }
-                catch (Exception ex) { throw ex; }
-                finally { if (stream != null) stream.Close(); }
-
-                if (first)
-                {
-                    fileViewModel.FileUpload.FilePath = relativePath;
-                    fileViewModel.FileUpload.FileName = file.FileName;
-                    fileViewModel.FileUpload.UploadDate = DateTime.Now;
-                    _context.Add(fileViewModel.FileUpload);
-                    first = false;
-                }
-                else
-                {
-                    FilesUpload nItems = new FilesUpload();
-                    nItems.MeetingID = fileViewModel.FileUpload.MeetingID;
-                    nItems.OwnerID = fileViewModel.FileUpload.OwnerID;
-                    nItems.FileName = file.FileName;
-                    nItems.UploadDate = DateTime.Now;
-                    nItems.Description = fileViewModel.FileUpload.Description;
-                    nItems.FilePath = relativePath;
-                    _context.Add(nItems);
-                }
+                ViewBag.ex = ex;
+                ModelState.AddModelError("", ex.Message);
+                return View();
             }
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
         }
 
         [HttpPost]
@@ -161,9 +232,10 @@ namespace WebApp1.Controllers
                                 {
                                     MeetingTitle = m.MeetingTitle + " - ngày "
                                     + m.MeetingDate?.ToString("dd/MM/yyyy"),
-                                    ID = m.MeetingID
+                                    ID = m.MeetingID.ToString()
                                 })
                                 .Where(m => (m.MeetingTitle.ToLower()).Contains((Prefix ?? "").ToLower())).ToList();
+            //MeetingTitle.Insert(0, new { MeetingTitle = "", ID = "" });
             return Json(MeetingTitle);
         }
 
@@ -186,9 +258,13 @@ namespace WebApp1.Controllers
                 }
 
                 string ownerName = (await _userManager.FindByIdAsync(file.OwnerID))?.BirthName ?? string.Empty;
-                string meetingTitle = (from m in _context.Meeting
-                                       where m.MeetingID == file.MeetingID
-                                       select m).First().MeetingTitle;
+                string meetingTitle = null;
+                if (file.MeetingID != null)
+                {
+                    meetingTitle = (from m in _context.Meeting
+                                    where m.MeetingID == file.MeetingID
+                                    select m).First().MeetingTitle;
+                }
                 FileVM = new FileViewModel_Edit(file, ownerName, meetingTitle);
                 FileVM.FileNameWithoutExt = Path.GetFileNameWithoutExtension(file.FileName);
                 FileVM.Extension = Path.GetExtension(file.FileName);
@@ -206,7 +282,7 @@ namespace WebApp1.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("")] FileViewModel_Edit fileViewModel)
+        public async Task<IActionResult> Edit(int id, [Bind("FileUpload,BirthName,MeetingTitle,Extension,FileNameWithoutExt")] FileViewModel_Edit fileViewModel)
         {
             if (id != fileViewModel.FileUpload.FileID)
             {

@@ -1,11 +1,12 @@
-﻿@using WebApp1.Data
+﻿@using WebApp1.Utilities
 @model WebApp1.ViewModels.FileViewModel
 
 @{
     ViewData["Title"] = "Thêm tài liệu";
+    var DocTypeList = (new DocLib()).GetEnumerator();
     var id = -1;
     var title = "";
-    if(ViewBag.meeting != null)
+    if (ViewBag.meeting != null)
     {
         id = ((Meeting)ViewBag.meeting).MeetingID;
         title = ((Meeting)ViewBag.meeting).MeetingTitle;
@@ -16,30 +17,65 @@
 
 <h4>Tài liệu</h4>
 <hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create" enctype="multipart/form-data">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input asp-for="FileUpload.MeetingID" type="hidden" class="form-control" value="@((id < 0) ? "" : id.ToString())" />
-            <div class="form-group ui-widget">
-                <label for="MeetingTitle" class="control-label">Cuộc họp</label>
-                <input id="MeetingTitle" type="text" class="form-control" />
-                <span asp-validation-for="FileUpload.MeetingID" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="FileUpload.Description" class="control-label"></label>
-                <input asp-for="FileUpload.Description" class="form-control" value="@(!String.IsNullOrEmpty(title) ? title : "")"/>
-                <span asp-validation-for="FileUpload.Description" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label class="control-label" asp-for="Files">Tài liệu</label>
-                <input asp-for="Files" class="form-control"/>
-                <span asp-validation-for="Files" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Thêm" class="btn btn-primary" />
-            </div>
-        </form>
+
+<div class="container C__FilesUpload">
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="Create" enctype="multipart/form-data">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input asp-for="FileUpload.MeetingID" type="hidden" class="form-control" value="@((id < 0) ? "" : id.ToString())" />
+                <div class="form-group ui-widget">
+                    <label for="MeetingTitle" class="control-label">Cuộc họp</label>
+                    <input id="MeetingTitle" type="text" class="form-control" value="@(!String.IsNullOrEmpty(title) ? title : "")" />
+                    <span asp-validation-for="FileUpload.MeetingID" class="text-danger"></span>
+                </div>
+                <div class="form-group C__FilesUpload__IsIncoming">
+                    <label asp-for="FileUpload.IsIncoming" class="control-label"></label>
+                    <div class="custom-control custom-radio">
+                        <input class="custom-control-input" id="FileUpload.IsIncoming_true" type="radio" value="true" name="FileUpload.IsIncoming" />
+                        <label for="FileUpload.IsIncoming_true" class="custom-control-label">
+                            Văn bản đến
+                        </label>
+                    </div>
+                    <div class="custom-control custom-radio">
+                        <input class="custom-control-input" id="FileUpload.IsIncoming_false" type="radio" value="false" name="FileUpload.IsIncoming" />
+                        <label for="FileUpload.IsIncoming_false" class="custom-control-label">
+                            Văn bản đi
+                        </label>
+                    </div>
+                    <div class="custom-control custom-radio">
+                        <input class="custom-control-input" id="FileUpload.IsIncoming_null" type="radio" value="" name="FileUpload.IsIncoming" checked />
+                        <label for="FileUpload.IsIncoming_null" class="custom-control-label">
+                            Khác
+                        </label>
+                    </div>
+                    <span asp-validation-for="FileUpload.IsIncoming" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="FileUpload.DocType" class="control-label"></label>
+                    <select asp-for="FileUpload.DocType" class="form-control">
+                        @foreach (var item in DocTypeList)
+                        {
+                            <option>@item</option>
+                        }
+                    </select>
+                    <span asp-validation-for="FileUpload.DocType" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="FileUpload.Description" class="control-label"></label>
+                    <input asp-for="FileUpload.Description" class="form-control" />
+                    <span asp-validation-for="FileUpload.Description" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label class="control-label" asp-for="Files">Tài liệu</label>
+                    <input asp-for="Files" class="form-control" />
+                    <span asp-validation-for="Files" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Thêm" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 

@@ -1,7 +1,8 @@
 ﻿@model WebApp1.ViewModels.FileViewModel_Edit
-
+@using WebApp1.Utilities
 @{
     ViewData["Title"] = "Sửa";
+    var DocTypeList = (new DocLib()).GetEnumerator();
 }
 
 <h1>Chỉnh sửa</h1>
@@ -24,6 +25,41 @@
                 <label asp-for="@Model.MeetingTitle" class="control-label"></label>
                 <input asp-for="@Model.MeetingTitle" type="text" class="form-control" />
                 <span asp-validation-for="@Model.MeetingTitle" class="text-danger"></span>
+            </div>
+            <div class="form-group C__FilesUpload__IsIncoming">
+                <label asp-for="FileUpload.IsIncoming" class="control-label"></label>
+                <div class="custom-control custom-radio">
+                    <input class="custom-control-input" id="FileUpload.IsIncoming_true" type="radio" value="true"
+                           name="FileUpload.IsIncoming" @if(Model.FileUpload.IsIncoming == true) {@("checked")}/>
+                    <label for="FileUpload.IsIncoming_true" class="custom-control-label">
+                        Văn bản đến
+                    </label>
+                </div>
+                <div class="custom-control custom-radio">
+                    <input class="custom-control-input" id="FileUpload.IsIncoming_false" type="radio" value="false"
+                           name="FileUpload.IsIncoming" @if(Model.FileUpload.IsIncoming == false) {@("checked")}/>
+                    <label for="FileUpload.IsIncoming_false" class="custom-control-label">
+                        Văn bản đi
+                    </label>
+                </div>
+                <div class="custom-control custom-radio">
+                    <input class="custom-control-input" id="FileUpload.IsIncoming_null" type="radio" value=""
+                           name="FileUpload.IsIncoming" @if(Model.FileUpload.IsIncoming == null) {@("checked")}/>
+                    <label for="FileUpload.IsIncoming_null" class="custom-control-label">
+                        Khác
+                    </label>
+                </div>
+                <span asp-validation-for="FileUpload.IsIncoming" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FileUpload.DocType" class="control-label"></label>
+                <select asp-for="FileUpload.DocType" class="form-control">
+                    @foreach (var item in DocTypeList)
+                    {
+                        <option>@item</option>
+                    }
+                </select>
+                <span asp-validation-for="FileUpload.DocType" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="@Model.FileNameWithoutExt" class="control-label"></label>

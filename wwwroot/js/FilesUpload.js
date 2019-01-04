@@ -22,6 +22,8 @@
         focus: function (event, ui) {
             event.preventDefault();
             $("#MeetingTitle").val(ui.item.label);
+            $("#MeetingID").val(ui.item.value);
+            $("#FileUpload_MeetingID").val(ui.item.value);
         }
     });
     $("#MeetingTitle").on('change', function () {

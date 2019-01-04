@@ -13,7 +13,6 @@ namespace WebApp1.Data.Migrations
                 {
                     FileID = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    MeetingID = table.Column<int>(nullable: false),
                     OwnerID = table.Column<string>(nullable: true),
                     FileName = table.Column<string>(nullable: true),
                     UploadDate = table.Column<DateTime>(nullable: true),

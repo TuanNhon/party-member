@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebApp1.Data;
 
 namespace WebApp1.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20181231082803_AddMeetingIdNullable")]
+    partial class AddMeetingIdNullable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -189,14 +191,9 @@ namespace WebApp1.Data.Migrations
 
                     b.Property<string>("Description");
 
-                    b.Property<string>("DocType")
-                        .IsRequired();
-
                     b.Property<string>("FileName");
 
                     b.Property<string>("FilePath");
-
-                    b.Property<bool?>("IsIncoming");
 
                     b.Property<int?>("MeetingID");
 

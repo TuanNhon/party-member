@@ -120,10 +120,13 @@ table.table.C__PartyMember tbody tr:hover {
 }
 
 .D__PartyMemeber .col-4 p{
-    text-align: center
+    margin-bottom: 5px;
 }
 .D__PartyMemeber .col-4 label{
     letter-spacing: -1px;
+}
+.C__FilesUpload .C__FilesUpload__IsIncoming label{
+    display: flex;
 }
 
 /*#endregion */

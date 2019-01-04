@@ -3,8 +3,8 @@
 $(document).ready(function () {
     $(document).ready(function () {
         $(".docIframe").fancybox({
-            'width': 600,
-            'height': 320,
+            'width': '70%',
+            'height': '90%',
             'type': 'iframe'
         });
     });

@@ -46,6 +46,7 @@
             <td>
                 <div class="form-group">
                     <a asp-action="Details" asp-route-id="@item.MeetingID" class="btn btn-sm btn-info"><i class="fas fa-info-circle"> Xem Tài liệu</i></a><br />
+                    <a asp-controller="FilesUpload" asp-action="Create" asp-route-MeetingID="@item.MeetingID" class="btn btn-sm btn-info"><i class="fas fa-plus"> Thêm tài liệu</i></a><br />
                     <a asp-action="Edit" asp-route-id="@item.MeetingID" class="btn btn-sm btn-primary"><i class="fas fa-edit"> Chỉnh sửa cuộc họp</i></a>
                 </div>
             </td>
